@@ -27,6 +27,14 @@ The front-end is using an [Vue.js](https://vuejs.org/).
 + git
 + node.js
 
+### Dependency
+
++ vue
++ vue-next
++ vue-router
++ Typescript
++ axios
+
 #### Project setup
 
 ```
