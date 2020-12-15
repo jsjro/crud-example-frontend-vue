@@ -8,13 +8,13 @@ This is a web server made with Vue.
 
 The following resources are available:
 
-+ ``GET /v1/tutorials`` (``JSON``)
-+ ``POST /v1/tutorials``
-+ ``DELETE /v1/tutorials``
-+ ``GET /v1/tutorials/:id`` (``JSON``)
-+ ``PUT /v1/tutorials/:id``
-+ ``DELETE /v1/tutorials/:id``
-+ ``GET /v1/tutorials/published`` (``JSON``)
++ ``GET /api/posts`` (``JSON``)
++ ``POST /api/posts``
++ ``DELETE /api/posts``
++ ``GET /api/posts/:id`` (``JSON``)
++ ``PUT /api/posts/:id``
++ ``DELETE /api/posts/:id``
++ ``GET /api/posts/published`` (``JSON``)
 
 ### Front-end
 
@@ -25,7 +25,7 @@ The front-end is using an [Vue.js](https://vuejs.org/).
 ### Requirements
 
 + git
-+ Node.js
++ node.js
 
 #### Project setup
 

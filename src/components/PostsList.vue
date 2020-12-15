@@ -20,48 +20,56 @@
             </div>
         </div>
         <div class="col-md-6">
-            <h4>Tutorials List</h4>
+            <h4>Posts List</h4>
             <ul class="list-group">
                 <li
                         class="list-group-item"
-                        :class="{ active: index == currentIndex }"
-                        v-for="(tutorial, index) in tutorials"
+                        :class="{ active: index === currentIndex }"
+                        v-for="(post, index) in posts"
                         :key="index"
-                        @click="setActiveTutorial(tutorial, index)"
+                        @click="setActiveTutorial(post, index)"
                 >
-                    {{ tutorial.title }}
+                    {{ post.title }}
                 </li>
             </ul>
 
-            <button class="m-3 btn btn-sm btn-danger" @click="removeAllTutorials">
+            <button class="m-3 btn btn-sm btn-danger" @click="removeAllPosts">
                 Remove All
             </button>
         </div>
         <div class="col-md-6">
-            <div v-if="currentTutorial">
-                <h4>Tutorial</h4>
+            <div v-if="currentPost">
+                <h4>Post</h4>
                 <div>
-                    <label><strong>Title:</strong></label> {{ currentTutorial.title }}
+                    <label><strong>Title:</strong></label> {{ currentPost.title }}
                 </div>
                 <div>
-                    <label><strong>Description:</strong></label>
-                    {{ currentTutorial.description }}
+                    <label><strong>Content:</strong></label>
+                    {{ currentPost.content }}
                 </div>
                 <div>
                     <label><strong>Status:</strong></label>
-                    {{ currentTutorial.published ? "Published" : "Pending" }}
+                    {{ currentPost.status ? "Published" : "Pending" }}
+                </div>
+                <div>
+                    <label><strong>Create Date:</strong></label>
+                    {{ currentPost.create_date }}
+                </div>
+                <div>
+                    <label><strong>Modified Date:</strong></label>
+                    {{ currentPost.modified_date }}
                 </div>
 
                 <a
                         class="badge badge-warning"
-                        :href="'/tutorials/' + currentTutorial.id"
+                        :href="'/posts/' + currentPost.id"
                 >
                     Edit
                 </a>
             </div>
             <div v-else>
                 <br/>
-                <p>Please click on a Tutorial...</p>
+                <p>Please click on a Post...</p>
             </div>
         </div>
     </div>
@@ -69,19 +77,19 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import TutorialDataService from "../services/TutorialDataService";
+import PostDataService from "../services/PostDataService";
 
 @Component
-export default class TutorialsList extends Vue {
-    private tutorials: any[] = [];
-    private currentTutorial: any = null;
+export default class PostsList extends Vue {
+    private posts: any[] = [];
+    private currentPost: any = null;
     private currentIndex: number = -1;
     private title: string = "";
 
-    retrieveTutorials() {
-        TutorialDataService.getAll()
+    retrievePosts() {
+        PostDataService.getAll()
             .then((response) => {
-                this.tutorials = response.data;
+                this.posts = response.data;
                 console.log(response.data);
             })
             .catch((e) => {
@@ -90,18 +98,18 @@ export default class TutorialsList extends Vue {
     }
 
     refreshList() {
-        this.retrieveTutorials();
-        this.currentTutorial = null;
+        this.retrievePosts();
+        this.currentPost = null;
         this.currentIndex = -1;
     }
 
-    setActiveTutorial(tutorial: any, index: number) {
-        this.currentTutorial = tutorial;
+    setActiveTutorial(post: any, index: number) {
+        this.currentPost = post;
         this.currentIndex = index;
     }
 
-    removeAllTutorials() {
-        TutorialDataService.deleteAll()
+    removeAllPosts() {
+        PostDataService.deleteAll()
             .then((response) => {
                 console.log(response.data);
                 this.refreshList();
@@ -112,9 +120,9 @@ export default class TutorialsList extends Vue {
     }
 
     searchTitle() {
-        TutorialDataService.findByTitle(this.title)
+        PostDataService.findByTitle(this.title)
             .then((response) => {
-                this.tutorials = response.data;
+                this.posts = response.data;
                 console.log(response.data);
             })
             .catch((e) => {
@@ -123,7 +131,7 @@ export default class TutorialsList extends Vue {
     }
 
     mounted() {
-        this.retrieveTutorials();
+        this.retrievePosts();
     }
 }
 </script>

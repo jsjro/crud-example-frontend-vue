@@ -1,6 +1,6 @@
 <template>
-    <div v-if="currentTutorial" class="edit-form">
-        <h4>Tutorial</h4>
+    <div v-if="currentPost" class="edit-form">
+        <h4>Post</h4>
         <form>
             <div class="form-group">
                 <label for="title">Title</label>
@@ -8,45 +8,45 @@
                         type="text"
                         class="form-control"
                         id="title"
-                        v-model="currentTutorial.title"
+                        v-model="currentPost.title"
                 />
             </div>
             <div class="form-group">
-                <label for="description">Description</label>
+                <label for="content">Content</label>
                 <input
                         type="text"
                         class="form-control"
-                        id="description"
-                        v-model="currentTutorial.description"
+                        id="content"
+                        v-model="currentPost.content"
                 />
             </div>
 
             <div class="form-group">
                 <label><strong>Status:</strong></label>
-                {{ currentTutorial.published ? "Published" : "Pending" }}
+                {{ currentPost.status ? "Published" : "Pending" }}
             </div>
         </form>
 
         <button
                 class="badge badge-primary mr-2"
-                v-if="currentTutorial.published"
-                @click="updatePublished(false)"
+                v-if="currentPost.status"
+                @click="updateStatus(false)"
         >
             UnPublish
         </button>
         <button
                 v-else
                 class="badge badge-primary mr-2"
-                @click="updatePublished(true)"
+                @click="updateStatus(true)"
         >
             Publish
         </button>
 
-        <button class="badge badge-danger mr-2" @click="deleteTutorial">
+        <button class="badge badge-danger mr-2" @click="deletePost">
             Delete
         </button>
 
-        <button type="submit" class="badge badge-success" @click="updateTutorial">
+        <button type="submit" class="badge badge-success" @click="updatePost">
             Update
         </button>
         <p>{{ message }}</p>
@@ -54,23 +54,23 @@
 
     <div v-else>
         <br/>
-        <p>Please click on a Tutorial...</p>
+        <p>Please click on a Post...</p>
     </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import TutorialDataService from "../services/TutorialDataService";
+import PostDataService from "../services/PostDataService";
 
 @Component
-export default class Tutorial extends Vue {
-    private currentTutorial: any = null;
+export default class Post extends Vue {
+    private currentPost: any = null;
     private message: string = "";
 
-    getTutorial(id: string) {
-        TutorialDataService.get(id)
+    getPost(id: string) {
+        PostDataService.get(id)
             .then((response) => {
-                this.currentTutorial = response.data;
+                this.currentPost = response.data;
                 console.log(response.data);
             })
             .catch((e) => {
@@ -78,17 +78,19 @@ export default class Tutorial extends Vue {
             });
     }
 
-    updatePublished(status: boolean) {
+    updateStatus(status: boolean) {
         var data = {
-            id: this.currentTutorial.id,
-            title: this.currentTutorial.title,
-            description: this.currentTutorial.description,
-            published: status,
+            id: this.currentPost.id,
+            title: this.currentPost.title,
+            content: this.currentPost.content,
+            create_date: this.currentPost.create_date,
+            modified_date: this.currentPost.modified_date,
+            status: status,
         };
 
-        TutorialDataService.update(this.currentTutorial.id, data)
+        PostDataService.update(this.currentPost.id, data)
             .then((response) => {
-                this.currentTutorial.published = status;
+                this.currentPost.status = status;
                 console.log(response.data);
             })
             .catch((e) => {
@@ -96,8 +98,8 @@ export default class Tutorial extends Vue {
             });
     }
 
-    updateTutorial() {
-        TutorialDataService.update(this.currentTutorial.id, this.currentTutorial)
+    updatePost() {
+        PostDataService.update(this.currentPost.id, this.currentPost)
             .then((response) => {
                 console.log(response.data);
                 this.message = "The tutorial was updated successfully!";
@@ -107,11 +109,11 @@ export default class Tutorial extends Vue {
             });
     }
 
-    deleteTutorial() {
-        TutorialDataService.delete(this.currentTutorial.id)
+    deletePost() {
+        PostDataService.delete(this.currentPost.id)
             .then((response) => {
                 console.log(response.data);
-                this.$router.push({name: "tutorials"});
+                this.$router.push({name: "posts"});
             })
             .catch((e) => {
                 console.log(e);
@@ -120,7 +122,7 @@ export default class Tutorial extends Vue {
 
     mounted() {
         this.message = "";
-        this.getTutorial(this.$route.params.id);
+        this.getPost(this.$route.params.id);
     }
 }
 </script>

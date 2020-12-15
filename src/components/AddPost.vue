@@ -8,56 +8,57 @@
                         class="form-control"
                         id="title"
                         required
-                        v-model="tutorial.title"
+                        v-model="post.title"
                         name="title"
                 />
             </div>
 
             <div class="form-group">
-                <label for="description">Description</label>
-                <input
+                <label for="content">Content</label>
+                <textarea
                         class="form-control"
-                        id="description"
+                        id="content"
                         required
-                        v-model="tutorial.description"
-                        name="description"
+                        v-model="post.content"
+                        name="content"
+                        rows="5"
                 />
             </div>
 
-            <button @click="saveTutorial" class="btn btn-success">Submit</button>
+            <button @click="savePost" class="btn btn-success">Submit</button>
         </div>
 
         <div v-else>
             <h4>You submitted successfully!</h4>
-            <button class="btn btn-success" @click="newTutorial">Add</button>
+            <button class="btn btn-success" @click="newPost">Add</button>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import TutorialDataService from "../services/TutorialDataService";
+import PostDataService from "../services/PostDataService";
 
 @Component
-export default class AddTutorial extends Vue {
-    private tutorial: any = {
+export default class AddPost extends Vue {
+    private post: any = {
         id: null,
         title: "",
-        description: "",
+        content: "",
         published: false,
     };
 
     private submitted: boolean = false;
 
-    saveTutorial() {
+    savePost() {
         var data = {
-            title: this.tutorial.title,
-            description: this.tutorial.description,
+            title: this.post.title,
+            content: this.post.content,
         };
 
-        TutorialDataService.create(data)
+        PostDataService.create(data)
             .then((response) => {
-                this.tutorial.id = response.data.id;
+                this.post.id = response.data.id;
                 console.log(response.data);
                 this.submitted = true;
             })
@@ -66,9 +67,9 @@ export default class AddTutorial extends Vue {
             });
     }
 
-    newTutorial() {
+    newPost() {
         this.submitted = false;
-        this.tutorial = {};
+        this.post = {};
     }
 }
 </script>
