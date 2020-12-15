@@ -2,19 +2,19 @@
 
 ## Introduction
 
-This is a web server made with Vue.
+Vue server
 
 ### Available resources
 
 The following resources are available:
 
-+ ``GET /api/posts`` (``JSON``)
-+ ``POST /api/posts``
-+ ``DELETE /api/posts``
-+ ``GET /api/posts/:id`` (``JSON``)
-+ ``PUT /api/posts/:id``
-+ ``DELETE /api/posts/:id``
-+ ``GET /api/posts/published`` (``JSON``)
++ ``GET /api/posts`` (``JSON``) : getAllPosts
++ ``GET /api/posts/:id`` (``JSON``) : getPostById
++ ``POST /api/posts`` : createPost
++ ``PUT /api/posts/:id`` : updatePost
++ ``DELETE /api/posts/:id`` : deletePost
++ ``DELETE /api/posts`` : deleteAllPosts
++ ``GET /api/posts/status`` (``JSON``) : findByStatus
 
 ### Front-end
 
